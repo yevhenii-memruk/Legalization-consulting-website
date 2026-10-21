@@ -3,6 +3,17 @@
 FastAPI website for **Non-stop Documents**, a legalization and document consulting
 company in Poland.
 
+## Current features
+
+- Responsive Polish landing page
+- Accessible navigation and mobile menu
+- Consultation form UI with an optional comment field
+- Services, company information, process, reviews placeholder, and FAQ sections
+- FastAPI health endpoint and automated route/static-asset tests
+
+The consultation form is currently a frontend demonstration. Server-side validation
+and Google Sheets delivery will be implemented in a later milestone.
+
 ## Requirements
 
 - Python 3.14
@@ -36,12 +47,12 @@ uv run ruff check .
 
 ```text
 src/legalization_consulting/
-├── main.py          # Application assembly
+├── main.py          # Application entry point & factory
 ├── core/            # Settings, paths, and Jinja2 setup
 ├── routers/         # HTML page and API routes
-├── static/          # CSS and future browser assets
+├── static/          # Static assets (CSS, JS, images)
 └── templates/       # Jinja2 HTML templates
-tests/               # Automated tests grouped by application area
+tests/               # Automated test suites
 ```
 
 Copy `.env.example` to `.env` when local settings need to override the defaults.
