@@ -14,6 +14,17 @@ def test_home_page(client: TestClient) -> None:
     assert 'type="button" data-demo-submit' in response.text
 
 
+def test_security_headers(client: TestClient) -> None:
+    response = client.get("/")
+
+    assert response.headers["content-security-policy"].startswith("default-src 'self'")
+    assert "frame-ancestors 'none'" in response.headers["content-security-policy"]
+    assert response.headers["permissions-policy"] == "camera=(), geolocation=(), microphone=()"
+    assert response.headers["referrer-policy"] == "strict-origin-when-cross-origin"
+    assert response.headers["x-content-type-options"] == "nosniff"
+    assert response.headers["x-frame-options"] == "DENY"
+
+
 def test_landing_page_assets(client: TestClient) -> None:
     stylesheet = client.get("/static/css/styles.css")
     script = client.get("/static/js/main.js")

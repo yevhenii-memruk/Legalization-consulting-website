@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 
 from legalization_consulting.core.config import get_settings
 from legalization_consulting.core.paths import STATIC_DIR
+from legalization_consulting.core.security import SecurityHeadersMiddleware
 from legalization_consulting.routers import api, pages
 
 
@@ -15,6 +16,7 @@ def create_app() -> FastAPI:
         version=settings.version,
         debug=settings.debug,
     )
+    application.add_middleware(SecurityHeadersMiddleware)
     application.mount(
         "/static",
         StaticFiles(directory=STATIC_DIR),
