@@ -7,10 +7,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    name: str = "Non-stop Documents"
+    name: str = "Non-Stop Documents"
     description: str = "Legalization consulting website"
     version: str = "0.1.0"
     debug: bool = False
+    contact_email: str = "documentnonstop@gmail.com"
     leads_enabled: bool = False
     google_sheets_spreadsheet_id: str | None = None
     google_sheets_range: str = "Leads!A:G"

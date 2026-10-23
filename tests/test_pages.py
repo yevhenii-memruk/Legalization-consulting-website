@@ -7,7 +7,7 @@ def test_home_page(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
-    assert "Non-stop Documents" in response.text
+    assert "Non-Stop Documents" in response.text
     assert 'id="services"' in response.text
     assert 'id="process"' in response.text
     assert 'id="faq"' in response.text
@@ -15,6 +15,8 @@ def test_home_page(client: TestClient) -> None:
     assert 'action="/api/leads"' in response.text
     assert 'method="post"' in response.text
     assert 'type="submit" data-lead-submit' in response.text
+    assert 'href="mailto:documentnonstop@gmail.com"' in response.text
+    assert 'href="/privacy"' in response.text
 
 
 @pytest.mark.parametrize(
@@ -45,6 +47,29 @@ def test_unknown_language_falls_back_to_polish(client: TestClient) -> None:
     assert response.status_code == 200
     assert '<html lang="pl">' in response.text
     assert "Twoje dokumenty." in response.text
+
+
+@pytest.mark.parametrize(
+    ("language", "expected_title"),
+    [
+        ("pl", "Polityka prywatności"),
+        ("uk", "Політика конфіденційності"),
+        ("ru", "Политика конфиденциальности"),
+        ("en", "Privacy policy"),
+    ],
+)
+def test_privacy_page_language(
+    client: TestClient,
+    language: str,
+    expected_title: str,
+) -> None:
+    response = client.get("/privacy", params={"lang": language})
+
+    assert response.status_code == 200
+    assert f'<html lang="{language}">' in response.text
+    assert expected_title in response.text
+    assert "documentnonstop@gmail.com" in response.text
+    assert "12" in response.text
 
 
 def test_security_headers(client: TestClient) -> None:

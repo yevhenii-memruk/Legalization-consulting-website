@@ -6,17 +6,18 @@
     <meta name="description" content="{{ content.meta_description }}">
     <title>{{ company_name }} — {{ content.meta_title }}</title>
     <link rel="icon" href="{{ url_for('static', path='/images/favicon.svg') }}" type="image/svg+xml">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=6">
     <script src="{{ url_for('static', path='/js/main.js') }}?v=6" defer></script>
   </head>
   <body>
+    {% set privacy_url = '/privacy' if current_language == 'pl' else '/privacy?lang=' ~ current_language %}
     <a class="skip-link" href="#main-content">{{ content.skip_link }}</a>
 
     <header class="site-header" data-site-header>
       <div class="container site-header__inner">
         <a class="brand" href="#top" aria-label="{{ content.home_label }}">
           <span class="brand__mark" aria-hidden="true">ND</span>
-          <span class="brand__name">Non-stop<br>Documents</span>
+          <span class="brand__name">Non-Stop<br>Documents</span>
         </a>
 
         <button
@@ -144,7 +145,10 @@
                 >
               </div>
 
-              <p class="privacy-note" id="form-note">{{ content.form.privacy }}</p>
+              <p class="privacy-note" id="form-note">
+                {{ content.form.privacy }}
+                <a href="{{ privacy_url }}">{{ content.footer.privacy }}</a>.
+              </p>
               <button class="button button--primary" type="submit" data-lead-submit>
                 {{ content.form.submit }}
                 <span aria-hidden="true">→</span>
@@ -296,7 +300,7 @@
         <div>
           <a class="brand brand--footer" href="#top" aria-label="{{ content.home_label }}">
             <span class="brand__mark" aria-hidden="true">ND</span>
-            <span class="brand__name">Non-stop<br>Documents</span>
+            <span class="brand__name">Non-Stop<br>Documents</span>
           </a>
           <p>{{ content.footer.description }}</p>
         </div>
@@ -309,12 +313,13 @@
         </div>
         <div>
           <p class="footer-heading">{{ content.footer.contact }}</p>
-          <p>{{ content.footer.contact_placeholder }}</p>
+          <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+          <p>{{ content.footer.location }}</p>
         </div>
       </div>
       <div class="container site-footer__bottom">
-        <span>© 2026 Non-stop Documents</span>
-        <span>{{ content.footer.privacy }}</span>
+        <span>© 2026 Non-Stop Documents</span>
+        <a href="{{ privacy_url }}">{{ content.footer.privacy }}</a>
       </div>
     </footer>
   </body>

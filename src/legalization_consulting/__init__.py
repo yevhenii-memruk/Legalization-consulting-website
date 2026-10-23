@@ -1,1 +1,1 @@
-"""Non-stop Documents web application."""
+"""Non-Stop Documents web application."""

@@ -15,11 +15,11 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
     "pl": {
         "meta_title": "legalizacja i dokumenty w Polsce",
         "meta_description": (
-            "Non-stop Documents — profesjonalne wsparcie w legalizacji pobytu "
+            "Non-Stop Documents — profesjonalne wsparcie w legalizacji pobytu "
             "i sprawach urzędowych w Polsce."
         ),
         "skip_link": "Przejdź do treści",
-        "home_label": "Non-stop Documents — strona główna",
+        "home_label": "Non-Stop Documents — strona główna",
         "menu_open": "Otwórz menu",
         "menu_close": "Zamknij menu",
         "navigation_label": "Główna nawigacja",
@@ -58,10 +58,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "comment_label": "Twój komentarz",
             "comment_placeholder": "Opisz krótko swoją sprawę...",
             "honeypot_label": "Strona internetowa firmy",
-            "privacy": (
-                "Wysyłając formularz, potwierdzasz zapoznanie się z informacją "
-                "o przetwarzaniu danych osobowych."
-            ),
+            "privacy": "Informacje o przetwarzaniu danych:",
             "submit": "Wyślij zapytanie",
             "status_pending": "Wysyłanie zapytania…",
             "status_success": (
@@ -135,7 +132,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "kicker": "O nas",
             "title": "Formalności bez niepotrzebnego chaosu",
             "lead": (
-                "Non-stop Documents wspiera cudzoziemców w sprawach związanych "
+                "Non-Stop Documents wspiera cudzoziemców w sprawach związanych "
                 "z pobytem i dokumentami w Polsce."
             ),
             "body": (
@@ -227,20 +224,18 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "description": "Wsparcie w legalizacji pobytu i dokumentach w Polsce.",
             "navigation": "Nawigacja",
             "contact": "Kontakt",
-            "contact_placeholder": (
-                "Dane kontaktowe i link do Telegramu zostaną uzupełnione przed publikacją."
-            ),
-            "privacy": "Polityka prywatności — w przygotowaniu",
+            "location": "Warszawa, Polska",
+            "privacy": "Polityka prywatności",
         },
     },
     "uk": {
         "meta_title": "легалізація та документи в Польщі",
         "meta_description": (
-            "Non-stop Documents — професійна підтримка в легалізації перебування "
+            "Non-Stop Documents — професійна підтримка в легалізації перебування "
             "та вирішенні офіційних питань у Польщі."
         ),
         "skip_link": "Перейти до вмісту",
-        "home_label": "Non-stop Documents — головна сторінка",
+        "home_label": "Non-Stop Documents — головна сторінка",
         "menu_open": "Відкрити меню",
         "menu_close": "Закрити меню",
         "navigation_label": "Головна навігація",
@@ -279,10 +274,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "comment_label": "Ваш коментар",
             "comment_placeholder": "Коротко опишіть вашу справу...",
             "honeypot_label": "Вебсайт компанії",
-            "privacy": (
-                "Надсилаючи форму, ви підтверджуєте ознайомлення з інформацією "
-                "про обробку персональних даних."
-            ),
+            "privacy": "Інформація про обробку даних:",
             "submit": "Надіслати запит",
             "status_pending": "Надсилання запиту…",
             "status_success": "Дякуємо. Ваш запит збережено — ми зв’яжемося з вами.",
@@ -351,7 +343,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "kicker": "Про нас",
             "title": "Формальності без зайвого хаосу",
             "lead": (
-                "Non-stop Documents підтримує іноземців у питаннях перебування "
+                "Non-Stop Documents підтримує іноземців у питаннях перебування "
                 "та документів у Польщі."
             ),
             "body": (
@@ -444,20 +436,18 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "description": "Підтримка в легалізації перебування та документах у Польщі.",
             "navigation": "Навігація",
             "contact": "Контакти",
-            "contact_placeholder": (
-                "Контактні дані та посилання на Telegram буде додано перед публікацією."
-            ),
-            "privacy": "Політика конфіденційності — готується",
+            "location": "Варшава, Польща",
+            "privacy": "Політика конфіденційності",
         },
     },
     "ru": {
         "meta_title": "легализация и документы в Польше",
         "meta_description": (
-            "Non-stop Documents — профессиональная поддержка в легализации пребывания "
+            "Non-Stop Documents — профессиональная поддержка в легализации пребывания "
             "и решении официальных вопросов в Польше."
         ),
         "skip_link": "Перейти к содержимому",
-        "home_label": "Non-stop Documents — главная страница",
+        "home_label": "Non-Stop Documents — главная страница",
         "menu_open": "Открыть меню",
         "menu_close": "Закрыть меню",
         "navigation_label": "Основная навигация",
@@ -496,10 +486,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "comment_label": "Ваш комментарий",
             "comment_placeholder": "Кратко опишите вашу ситуацию...",
             "honeypot_label": "Сайт компании",
-            "privacy": (
-                "Отправляя форму, вы подтверждаете ознакомление с информацией "
-                "об обработке персональных данных."
-            ),
+            "privacy": "Информация об обработке данных:",
             "submit": "Отправить заявку",
             "status_pending": "Отправка заявки…",
             "status_success": "Спасибо. Ваша заявка сохранена — мы свяжемся с вами.",
@@ -569,7 +556,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "kicker": "О нас",
             "title": "Формальности без лишнего хаоса",
             "lead": (
-                "Non-stop Documents поддерживает иностранцев в вопросах пребывания "
+                "Non-Stop Documents поддерживает иностранцев в вопросах пребывания "
                 "и документов в Польше."
             ),
             "body": (
@@ -658,20 +645,18 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "description": "Поддержка в легализации пребывания и документах в Польше.",
             "navigation": "Навигация",
             "contact": "Контакты",
-            "contact_placeholder": (
-                "Контактные данные и ссылка на Telegram будут добавлены перед публикацией."
-            ),
-            "privacy": "Политика конфиденциальности — готовится",
+            "location": "Варшава, Польша",
+            "privacy": "Политика конфиденциальности",
         },
     },
     "en": {
         "meta_title": "legalization and documents in Poland",
         "meta_description": (
-            "Non-stop Documents — professional support with residence legalization "
+            "Non-Stop Documents — professional support with residence legalization "
             "and official matters in Poland."
         ),
         "skip_link": "Skip to content",
-        "home_label": "Non-stop Documents — home page",
+        "home_label": "Non-Stop Documents — home page",
         "menu_open": "Open menu",
         "menu_close": "Close menu",
         "navigation_label": "Main navigation",
@@ -710,10 +695,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "comment_label": "Your comment",
             "comment_placeholder": "Briefly describe your case...",
             "honeypot_label": "Company website",
-            "privacy": (
-                "By submitting the form, you confirm that you have read the information "
-                "about personal data processing."
-            ),
+            "privacy": "Information about personal data processing:",
             "submit": "Send enquiry",
             "status_pending": "Sending your enquiry…",
             "status_success": "Thank you. Your enquiry has been saved — we will contact you.",
@@ -783,7 +765,7 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "kicker": "About us",
             "title": "Formalities without unnecessary confusion",
             "lead": (
-                "Non-stop Documents supports foreigners with residence and document "
+                "Non-Stop Documents supports foreigners with residence and document "
                 "matters in Poland."
             ),
             "body": (
@@ -873,10 +855,8 @@ PAGE_CONTENT: dict[str, dict[str, Any]] = {
             "description": "Support with residence legalization and documents in Poland.",
             "navigation": "Navigation",
             "contact": "Contact",
-            "contact_placeholder": (
-                "Contact details and a Telegram link will be added before publication."
-            ),
-            "privacy": "Privacy policy — in preparation",
+            "location": "Warsaw, Poland",
+            "privacy": "Privacy policy",
         },
     },
 }

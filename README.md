@@ -1,6 +1,6 @@
-# Non-stop Documents
+# Non-Stop Documents
 
-FastAPI website for **Non-stop Documents**, a legalization and document consulting
+FastAPI website for **Non-Stop Documents**, a legalization and document consulting
 company in Poland.
 
 ## Current features
@@ -8,6 +8,7 @@ company in Poland.
 - Responsive landing page in Polish, Ukrainian, Russian, and English
 - Accessible navigation and mobile menu
 - Consultation form with server-side validation and an optional comment field
+- Localized privacy policy and public contact details
 - Services, company information, process, reviews placeholder, and FAQ sections
 - FastAPI health endpoint and automated route/static-asset tests
 
