@@ -11,6 +11,7 @@ dependencies = [
     "fastapi[standard]>=0.141.1",
     "google-api-python-client>=2.201.0",
     "jinja2>=3.1.6",
+    "phonenumberslite>=9.0.41",
     "pydantic-settings>=2.12.0",
 ]
 

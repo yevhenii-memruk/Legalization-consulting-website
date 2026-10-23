@@ -4,6 +4,8 @@ import re
 from enum import StrEnum
 from typing import Annotated, Literal
 
+import phonenumbers
+from phonenumbers import NumberParseException, PhoneNumberFormat
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 PHONE_CHARACTERS = re.compile(r"^\+?[0-9\s().-]+$")
@@ -38,20 +40,29 @@ class LeadCreate(BaseModel):
     @field_validator("phone")
     @classmethod
     def normalize_phone(cls, value: str) -> str:
-        """Validate a broadly international phone number and normalize separators."""
+        """Validate a phone number and store it in international E.164 format."""
         if not PHONE_CHARACTERS.fullmatch(value):
             raise ValueError("phone contains unsupported characters")
 
         digits = re.sub(r"\D", "", value)
-        normalized_digits = digits.removeprefix("00")
-        if not 7 <= len(normalized_digits) <= 15:
-            raise ValueError("phone must contain between 7 and 15 digits")
-
         if value.startswith("+"):
-            return f"+{digits}"
-        if digits.startswith("00"):
-            return f"+{normalized_digits}"
-        return digits
+            parseable = f"+{digits}"
+        elif digits.startswith("00"):
+            parseable = f"+{digits[2:]}"
+        elif len(digits) == 11 and digits.startswith("48"):
+            parseable = f"+{digits}"
+        else:
+            parseable = digits
+
+        try:
+            number = phonenumbers.parse(parseable, "PL")
+        except NumberParseException as exc:
+            raise ValueError("phone is not a valid telephone number") from exc
+
+        if not phonenumbers.is_valid_number(number):
+            raise ValueError("phone is not a valid telephone number")
+
+        return phonenumbers.format_number(number, PhoneNumberFormat.E164)
 
     @field_validator("comment", mode="before")
     @classmethod

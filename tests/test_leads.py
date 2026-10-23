@@ -131,6 +131,55 @@ def test_rate_limits_repeated_submissions(
     assert len(lead_store.leads) == 5
 
 
+@pytest.mark.parametrize(
+    "phone",
+    [
+        "500 100 200",
+        "48 500-100-200",
+        "0048 (500) 100 200",
+        "+48 500 100 200",
+    ],
+)
+def test_normalizes_polish_phone_variants(
+    lead_client: TestClient,
+    lead_store: RecordingLeadStore,
+    phone: str,
+) -> None:
+    response = lead_client.post(
+        "/api/leads",
+        json={"full_name": "Jan Kowalski", "phone": phone},
+    )
+
+    assert response.status_code == 201
+    assert lead_store.leads[0].phone == "+48500100200"
+
+
+def test_normalizes_foreign_phone_with_country_code(
+    lead_client: TestClient,
+    lead_store: RecordingLeadStore,
+) -> None:
+    response = lead_client.post(
+        "/api/leads",
+        json={"full_name": "Olena Kovalenko", "phone": "+380 50 123 45 67"},
+    )
+
+    assert response.status_code == 201
+    assert lead_store.leads[0].phone == "+380501234567"
+
+
+def test_foreign_phone_without_plus_is_rejected(
+    lead_client: TestClient,
+    lead_store: RecordingLeadStore,
+) -> None:
+    response = lead_client.post(
+        "/api/leads",
+        json={"full_name": "Olena Kovalenko", "phone": "380501234567"},
+    )
+
+    assert response.status_code == 422
+    assert lead_store.leads == []
+
+
 def test_lead_collection_requires_spreadsheet_id() -> None:
     with pytest.raises(ValidationError):
         Settings(
