@@ -9,8 +9,8 @@
     >
     <title>{{ company_name }} — legalizacja i dokumenty w Polsce</title>
     <link rel="icon" href="{{ url_for('static', path='/images/favicon.svg') }}" type="image/svg+xml">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=3">
-    <script src="{{ url_for('static', path='/js/main.js') }}?v=4" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=4">
+    <script src="{{ url_for('static', path='/js/main.js') }}?v=5" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Przejdź do treści</a>
@@ -76,7 +76,13 @@
               <p>Wypełnij formularz, a skontaktujemy się z Tobą.</p>
             </div>
 
-            <form class="lead-form" aria-describedby="form-note" data-demo-form>
+            <form
+              class="lead-form"
+              action="/api/leads"
+              method="post"
+              aria-describedby="form-note"
+              data-lead-form
+            >
               <label for="full-name">Imię i nazwisko</label>
               <input
                 id="full-name"
@@ -84,6 +90,8 @@
                 type="text"
                 autocomplete="name"
                 placeholder="Jan Kowalski"
+                minlength="2"
+                maxlength="120"
                 required
               >
 
@@ -94,6 +102,8 @@
                 type="tel"
                 autocomplete="tel"
                 placeholder="+48 123 456 789"
+                minlength="7"
+                maxlength="32"
                 required
               >
 
@@ -104,15 +114,28 @@
                   id="comment"
                   name="comment"
                   rows="3"
+                  maxlength="1000"
                   placeholder="Opisz krótko swoją sprawę..."
                 ></textarea>
               </details>
+
+              <div class="form-honeypot" aria-hidden="true">
+                <label for="company-website">Strona internetowa firmy</label>
+                <input
+                  id="company-website"
+                  name="company_website"
+                  type="text"
+                  tabindex="-1"
+                  autocomplete="off"
+                  maxlength="200"
+                >
+              </div>
 
               <p class="privacy-note" id="form-note">
                 Wysyłając formularz, potwierdzasz zapoznanie się z informacją
                 o przetwarzaniu danych osobowych.
               </p>
-              <button class="button button--primary" type="button" data-demo-submit>
+              <button class="button button--primary" type="submit" data-lead-submit>
                 Wyślij zapytanie
                 <span aria-hidden="true">→</span>
               </button>

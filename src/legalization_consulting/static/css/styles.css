@@ -252,6 +252,7 @@ h1 {
 }
 
 .lead-form {
+  position: relative;
   display: grid;
   gap: 0.7rem;
 }
@@ -342,6 +343,20 @@ h1 {
 .button--primary:hover {
   background: var(--navy-800);
   transform: translateY(-1px);
+}
+
+.button--primary:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.form-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .button:focus-visible,
@@ -951,6 +966,14 @@ h1 {
   color: var(--blue-600);
   font-size: 0.68rem;
   line-height: 1.45;
+}
+
+.form-status[data-state="success"] {
+  color: #236b43;
+}
+
+.form-status[data-state="error"] {
+  color: #a33a31;
 }
 
 .site-footer {

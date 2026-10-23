@@ -11,7 +11,9 @@ def test_home_page(client: TestClient) -> None:
     assert 'id="process"' in response.text
     assert 'id="faq"' in response.text
     assert "Karta pobytu" in response.text
-    assert 'type="button" data-demo-submit' in response.text
+    assert 'action="/api/leads"' in response.text
+    assert 'method="post"' in response.text
+    assert 'type="submit" data-lead-submit' in response.text
 
 
 def test_security_headers(client: TestClient) -> None:
