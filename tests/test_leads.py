@@ -1,4 +1,6 @@
 from collections.abc import Iterator
+from datetime import UTC, datetime
+from uuid import UUID
 
 import pytest
 from fastapi.testclient import TestClient
@@ -6,6 +8,7 @@ from pydantic import ValidationError
 
 from legalization_consulting.core.config import Settings
 from legalization_consulting.main import create_app
+from legalization_consulting.schemas.leads import LeadLanguage
 from legalization_consulting.services.leads import LeadRecord, LeadStorageError
 
 
@@ -58,6 +61,22 @@ def test_create_lead(lead_client: TestClient, lead_store: RecordingLeadStore) ->
     assert lead.comment == "Karta pobytu"
     assert lead.created_at.tzinfo is not None
     assert lead.as_sheet_row()[5:] == ["pl", "website"]
+
+
+def test_sheet_row_uses_readable_warsaw_time() -> None:
+    lead = LeadRecord(
+        lead_id=UUID("12345678-1234-5678-1234-567812345678"),
+        created_at=datetime(2026, 10, 23, 16, 20, 15, 660017, tzinfo=UTC),
+        full_name="Jan Kowalski",
+        phone="+48500100200",
+        comment=None,
+        language=LeadLanguage.PL,
+    )
+
+    row = lead.as_sheet_row()
+
+    assert row[0] == "12345678-1234-5678-1234-567812345678"
+    assert row[1] == "2026-10-23 18:20:15"
 
 
 @pytest.mark.parametrize(

@@ -13,6 +13,7 @@ dependencies = [
     "jinja2>=3.1.6",
     "phonenumberslite>=9.0.41",
     "pydantic-settings>=2.12.0",
+    "tzdata>=2026.5",
 ]
 
 [dependency-groups]

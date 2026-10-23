@@ -64,7 +64,7 @@ Copy `.env.example` to `.env` when local settings need to override the defaults.
 Create a Google Sheet with these columns in the `Leads` tab:
 
 ```text
-Lead ID | Created at UTC | Full name | Phone | Comment | Language | Source
+Lead ID | Created at Europe/Warsaw | Full name | Phone | Comment | Language | Source
 ```
 
 Copy `.env.example` to `.env`, set the spreadsheet ID, configure Google Application

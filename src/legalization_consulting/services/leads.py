@@ -4,8 +4,12 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Protocol
 from uuid import UUID, uuid4
+from zoneinfo import ZoneInfo
 
 from legalization_consulting.schemas.leads import LeadCreate, LeadLanguage
+
+WARSAW_TIME_ZONE = ZoneInfo("Europe/Warsaw")
+SHEET_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 @dataclass(frozen=True, slots=True)
@@ -24,7 +28,7 @@ class LeadRecord:
         """Return values in the documented Google Sheet column order."""
         return [
             str(self.lead_id),
-            self.created_at.isoformat(),
+            self.created_at.astimezone(WARSAW_TIME_ZONE).strftime(SHEET_DATETIME_FORMAT),
             self.full_name,
             self.phone,
             self.comment or "",
