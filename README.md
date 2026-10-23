@@ -7,12 +7,14 @@ company in Poland.
 
 - Responsive Polish landing page
 - Accessible navigation and mobile menu
-- Consultation form UI with an optional comment field
+- Consultation form with server-side validation and an optional comment field
 - Services, company information, process, reviews placeholder, and FAQ sections
 - FastAPI health endpoint and automated route/static-asset tests
 
-The consultation form is currently a frontend demonstration. Server-side validation
-and Google Sheets delivery will be implemented in a later milestone.
+Lead collection is disabled by default. When enabled, validated consultation requests
+are appended to a private Google Sheet through Application Default Credentials.
+While it is disabled, the public endpoint returns a controlled `503` response and does
+not retain submitted personal data.
 
 ## Requirements
 
@@ -56,3 +58,15 @@ tests/               # Automated test suites
 ```
 
 Copy `.env.example` to `.env` when local settings need to override the defaults.
+
+## Lead collection
+
+Create a Google Sheet with these columns in the `Leads` tab:
+
+```text
+Lead ID | Created at UTC | Full name | Phone | Comment | Language | Source
+```
+
+Copy `.env.example` to `.env`, set the spreadsheet ID, configure Google Application
+Default Credentials, and enable lead collection only after publishing the required
+privacy information. Credential files and private keys must never be committed.
