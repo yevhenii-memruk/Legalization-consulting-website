@@ -87,6 +87,7 @@ def test_landing_page_assets(client: TestClient) -> None:
     stylesheet = client.get("/static/css/styles.css")
     script = client.get("/static/js/main.js")
     image = client.get("/static/images/warsaw-skyline.jpg")
+    social_image = client.get("/static/images/og-cover.png")
     favicon = client.get("/static/images/favicon.svg")
 
     assert stylesheet.status_code == 200
@@ -95,5 +96,7 @@ def test_landing_page_assets(client: TestClient) -> None:
     assert "javascript" in script.headers["content-type"]
     assert image.status_code == 200
     assert image.headers["content-type"] == "image/jpeg"
+    assert social_image.status_code == 200
+    assert social_image.headers["content-type"] == "image/png"
     assert favicon.status_code == 200
     assert favicon.headers["content-type"] == "image/svg+xml"

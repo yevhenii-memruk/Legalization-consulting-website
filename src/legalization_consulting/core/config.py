@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import Field, model_validator
+from pydantic import AnyHttpUrl, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     version: str = "0.1.0"
     debug: bool = False
     contact_email: str = "documentnonstop@gmail.com"
+    public_base_url: AnyHttpUrl | None = None
     leads_enabled: bool = False
     google_sheets_spreadsheet_id: str | None = None
     google_sheets_range: str = "Leads!A:G"
@@ -29,9 +30,7 @@ class Settings(BaseSettings):
     def validate_lead_storage(self) -> Settings:
         """Require a destination before real lead collection is enabled."""
         if self.leads_enabled and not self.google_sheets_spreadsheet_id:
-            raise ValueError(
-                "APP_GOOGLE_SHEETS_SPREADSHEET_ID is required when leads are enabled"
-            )
+            raise ValueError("APP_GOOGLE_SHEETS_SPREADSHEET_ID is required when leads are enabled")
         return self
 
 

@@ -5,7 +5,7 @@ from legalization_consulting.core.config import Settings, get_settings
 from legalization_consulting.core.paths import STATIC_DIR
 from legalization_consulting.core.security import SecurityHeadersMiddleware
 from legalization_consulting.integrations.google_sheets import GoogleSheetsLeadStore
-from legalization_consulting.routers import api, leads, pages
+from legalization_consulting.routers import api, leads, pages, seo
 from legalization_consulting.services.leads import DisabledLeadStore, LeadStore
 from legalization_consulting.services.rate_limit import LeadRateLimiter
 
@@ -23,6 +23,7 @@ def create_app(
         version=settings.version,
         debug=settings.debug,
     )
+    application.state.settings = settings
     if lead_store is not None:
         application.state.lead_store = lead_store
     elif settings.leads_enabled:
@@ -46,6 +47,7 @@ def create_app(
     application.include_router(pages.router)
     application.include_router(api.router)
     application.include_router(leads.router)
+    application.include_router(seo.router)
 
     return application
 

@@ -5,10 +5,10 @@ from typing import Any
 DEFAULT_LANGUAGE = "pl"
 
 LANGUAGES = (
-    {"code": "pl", "label": "PL", "name": "Polski"},
-    {"code": "uk", "label": "UA", "name": "Українська"},
-    {"code": "ru", "label": "RU", "name": "Русский"},
-    {"code": "en", "label": "EN", "name": "English"},
+    {"code": "pl", "label": "PL", "name": "Polski", "locale": "pl_PL"},
+    {"code": "uk", "label": "UA", "name": "Українська", "locale": "uk_UA"},
+    {"code": "ru", "label": "RU", "name": "Русский", "locale": "ru_RU"},
+    {"code": "en", "label": "EN", "name": "English", "locale": "en_US"},
 )
 
 PAGE_CONTENT: dict[str, dict[str, Any]] = {

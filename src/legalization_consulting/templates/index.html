@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ content.meta_description }}">
     <title>{{ company_name }} — {{ content.meta_title }}</title>
+    {% set seo_title = company_name ~ ' — ' ~ content.meta_title %}
+    {% set seo_description = content.meta_description %}
+    {% include "partials/seo.html" %}
     <link rel="icon" href="{{ url_for('static', path='/images/favicon.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=6">
     <script src="{{ url_for('static', path='/js/main.js') }}?v=6" defer></script>
