@@ -132,9 +132,7 @@ def test_returns_service_unavailable_when_storage_fails() -> None:
         )
 
     assert response.status_code == 503
-    assert response.json() == {
-        "detail": "Consultation requests are temporarily unavailable"
-    }
+    assert response.json() == {"detail": "Consultation requests are temporarily unavailable"}
 
 
 def test_rate_limits_repeated_submissions(

@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+.uv-cache
+.pytest_cache
+.ruff_cache
+__pycache__
+*.py[cod]
+.env
+.env.*
+!.env.example
+application_default_credentials.json
+service-account*.json
+tests

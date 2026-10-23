@@ -9,8 +9,10 @@ company in Poland.
 - Accessible navigation and mobile menu
 - Consultation form with server-side validation and an optional comment field
 - Localized privacy policy and public contact details
+- Canonical, multilingual, and social-sharing metadata after a public URL is configured
+- Dynamic `robots.txt` and XML sitemap with safe pre-production defaults
 - Services, company information, process, reviews placeholder, and FAQ sections
-- FastAPI health endpoint and automated route/static-asset tests
+- FastAPI health endpoint, automated tests, and GitHub Actions quality checks
 
 Lead collection is disabled by default. When enabled, validated consultation requests
 are appended to a private Google Sheet through Application Default Credentials.
@@ -62,6 +64,23 @@ tests/               # Automated test suites
 ```
 
 Copy `.env.example` to `.env` when local settings need to override the defaults.
+
+## Production configuration
+
+Set `APP_PUBLIC_BASE_URL` to the final HTTPS origin, without a path, after choosing a
+domain. Until it is set, pages use `noindex,nofollow`, `robots.txt` disallows crawling,
+and `/sitemap.xml` is unavailable. This prevents preview environments from being
+indexed accidentally.
+
+The application includes a production container that runs as a non-root user:
+
+```powershell
+docker build -t non-stop-documents .
+docker run --rm -p 8080:8080 --env-file .env non-stop-documents
+```
+
+Open <http://127.0.0.1:8080/health> to verify the container. Never bake `.env` or Google
+credentials into the image; inject them through the hosting platform's secret settings.
 
 ## Lead collection
 

@@ -1,7 +1,7 @@
 [project]
 name = "legalization-consulting"
 version = "0.1.0"
-description = "Website for Non-stop Documents legalization consulting services"
+description = "Website for Non-Stop Documents legalization consulting services"
 readme = "README.md"
 authors = [
     { name = "yevhenii-memruk", email = "yevhenii.memruk@gmail.com" }
