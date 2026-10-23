@@ -1,23 +1,20 @@
 <!doctype html>
-<html lang="pl">
+<html lang="{{ current_language }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta
-      name="description"
-      content="Non-stop Documents — profesjonalne wsparcie w legalizacji pobytu i sprawach urzędowych w Polsce."
-    >
-    <title>{{ company_name }} — legalizacja i dokumenty w Polsce</title>
+    <meta name="description" content="{{ content.meta_description }}">
+    <title>{{ company_name }} — {{ content.meta_title }}</title>
     <link rel="icon" href="{{ url_for('static', path='/images/favicon.svg') }}" type="image/svg+xml">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=4">
-    <script src="{{ url_for('static', path='/js/main.js') }}?v=5" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v=5">
+    <script src="{{ url_for('static', path='/js/main.js') }}?v=6" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Przejdź do treści</a>
+    <a class="skip-link" href="#main-content">{{ content.skip_link }}</a>
 
     <header class="site-header" data-site-header>
       <div class="container site-header__inner">
-        <a class="brand" href="#top" aria-label="Non-stop Documents — strona główna">
+        <a class="brand" href="#top" aria-label="{{ content.home_label }}">
           <span class="brand__mark" aria-hidden="true">ND</span>
           <span class="brand__name">Non-stop<br>Documents</span>
         </a>
@@ -27,27 +24,39 @@
           type="button"
           aria-expanded="false"
           aria-controls="primary-navigation"
-          aria-label="Otwórz menu"
+          aria-label="{{ content.menu_open }}"
+          data-label-open="{{ content.menu_open }}"
+          data-label-close="{{ content.menu_close }}"
           data-nav-toggle
         >
           <span></span><span></span><span></span>
         </button>
 
-        <nav class="site-nav" id="primary-navigation" aria-label="Główna nawigacja" data-navigation>
-          <a href="#services">Usługi</a>
-          <a href="#about">O nas</a>
-          <a href="#process">Jak działamy</a>
-          <a href="#faq">FAQ</a>
+        <nav
+          class="site-nav"
+          id="primary-navigation"
+          aria-label="{{ content.navigation_label }}"
+          data-navigation
+        >
+          <a href="#services">{{ content.nav.services }}</a>
+          <a href="#about">{{ content.nav.about }}</a>
+          <a href="#process">{{ content.nav.process }}</a>
+          <a href="#faq">{{ content.nav.faq }}</a>
         </nav>
 
         <div class="header-actions">
-          <div class="language-switcher" aria-label="Wybór języka">
-            <span class="language-switcher__active" aria-current="true">PL</span>
-            <button type="button" disabled title="Wkrótce">UA</button>
-            <button type="button" disabled title="Wkrótce">RU</button>
-            <button type="button" disabled title="Wkrótce">EN</button>
-          </div>
-          <a class="header-cta" href="#consultation">Konsultacja</a>
+          <nav class="language-switcher" aria-label="{{ content.language_label }}">
+            {% for language in languages %}
+              <a
+                href="{% if language.code == 'pl' %}/{% else %}/?lang={{ language.code }}{% endif %}"
+                lang="{{ language.code }}"
+                hreflang="{{ language.code }}"
+                title="{{ language.name }}"
+                {% if language.code == current_language %}class="language-switcher__active" aria-current="page"{% endif %}
+              >{{ language.label }}</a>
+            {% endfor %}
+          </nav>
+          <a class="header-cta" href="#consultation">{{ content.nav.consultation }}</a>
         </div>
       </div>
     </header>
@@ -56,24 +65,19 @@
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="container hero__grid">
           <div class="hero__content">
-            <p class="eyebrow">Legalizacja pobytu i dokumenty w Polsce</p>
-            <h1 id="hero-title">Twoje dokumenty.<br>Nasze doświadczenie.</h1>
-            <p class="hero__lead">
-              Pomagamy cudzoziemcom przejść przez formalności spokojnie, przejrzyście
-              i z profesjonalnym wsparciem na każdym etapie.
-            </p>
-            <ul class="hero__assurances" aria-label="Nasze wartości">
-              <li>Jasny plan działania</li>
-              <li>Indywidualne podejście</li>
-              <li>Wsparcie w Warszawie i online</li>
+            <p class="eyebrow">{{ content.hero.eyebrow }}</p>
+            <h1 id="hero-title">{{ content.hero.title_1 }}<br>{{ content.hero.title_2 }}</h1>
+            <p class="hero__lead">{{ content.hero.lead }}</p>
+            <ul class="hero__assurances" aria-label="{{ content.hero.values_label }}">
+              {% for value in content.hero['values'] %}<li>{{ value }}</li>{% endfor %}
             </ul>
           </div>
 
           <div class="lead-card" id="consultation">
             <div class="lead-card__heading">
-              <p class="lead-card__kicker">Bezpłatny pierwszy kontakt</p>
-              <h2>Zostaw zapytanie</h2>
-              <p>Wypełnij formularz, a skontaktujemy się z Tobą.</p>
+              <p class="lead-card__kicker">{{ content.form.kicker }}</p>
+              <h2>{{ content.form.title }}</h2>
+              <p>{{ content.form.intro }}</p>
             </div>
 
             <form
@@ -81,21 +85,27 @@
               action="/api/leads"
               method="post"
               aria-describedby="form-note"
+              data-status-pending="{{ content.form.status_pending }}"
+              data-status-success="{{ content.form.status_success }}"
+              data-status-rate-limit="{{ content.form.status_rate_limit }}"
+              data-status-validation="{{ content.form.status_validation }}"
+              data-status-unavailable="{{ content.form.status_unavailable }}"
+              data-status-connection="{{ content.form.status_connection }}"
               data-lead-form
             >
-              <label for="full-name">Imię i nazwisko</label>
+              <label for="full-name">{{ content.form.name_label }}</label>
               <input
                 id="full-name"
                 name="full_name"
                 type="text"
                 autocomplete="name"
-                placeholder="Jan Kowalski"
+                placeholder="{{ content.form.name_placeholder }}"
                 minlength="2"
                 maxlength="120"
                 required
               >
 
-              <label for="phone">Numer telefonu</label>
+              <label for="phone">{{ content.form.phone_label }}</label>
               <input
                 id="phone"
                 name="phone"
@@ -108,19 +118,22 @@
               >
 
               <details class="optional-field">
-                <summary>Dodaj komentarz <span>(opcjonalnie)</span></summary>
-                <label class="sr-only" for="comment">Twój komentarz</label>
+                <summary>
+                  {{ content.form.comment_summary }}
+                  <span>({{ content.form.optional }})</span>
+                </summary>
+                <label class="sr-only" for="comment">{{ content.form.comment_label }}</label>
                 <textarea
                   id="comment"
                   name="comment"
                   rows="3"
                   maxlength="1000"
-                  placeholder="Opisz krótko swoją sprawę..."
+                  placeholder="{{ content.form.comment_placeholder }}"
                 ></textarea>
               </details>
 
               <div class="form-honeypot" aria-hidden="true">
-                <label for="company-website">Strona internetowa firmy</label>
+                <label for="company-website">{{ content.form.honeypot_label }}</label>
                 <input
                   id="company-website"
                   name="company_website"
@@ -131,12 +144,9 @@
                 >
               </div>
 
-              <p class="privacy-note" id="form-note">
-                Wysyłając formularz, potwierdzasz zapoznanie się z informacją
-                o przetwarzaniu danych osobowych.
-              </p>
+              <p class="privacy-note" id="form-note">{{ content.form.privacy }}</p>
               <button class="button button--primary" type="submit" data-lead-submit>
-                Wyślij zapytanie
+                {{ content.form.submit }}
                 <span aria-hidden="true">→</span>
               </button>
               <p class="form-status" role="status" aria-live="polite" data-form-status></p>
@@ -145,13 +155,12 @@
         </div>
       </section>
 
-      <section class="trust-strip" aria-label="Zakres wsparcia">
+      <section class="trust-strip" aria-label="{{ content.trust.label }}">
         <div class="container trust-strip__inner">
-          <p>Wsparcie w sprawach urzędowych</p>
-          <span aria-hidden="true"></span>
-          <p>Dokumenty przygotowane krok po kroku</p>
-          <span aria-hidden="true"></span>
-          <p>Konsultacje stacjonarne i online</p>
+          {% for item in content.trust['items'] %}
+            {% if not loop.first %}<span aria-hidden="true"></span>{% endif %}
+            <p>{{ item }}</p>
+          {% endfor %}
         </div>
       </section>
 
@@ -159,46 +168,23 @@
         <div class="container">
           <div class="section-heading section-heading--split">
             <div>
-              <p class="section-kicker">Nasze usługi</p>
-              <h2 id="services-title">Pomoc w najważniejszych formalnościach</h2>
+              <p class="section-kicker">{{ content.services.kicker }}</p>
+              <h2 id="services-title">{{ content.services.title }}</h2>
             </div>
-            <p>
-              Każdą sprawę zaczynamy od poznania Twojej sytuacji i ustalenia jasnego
-              zakresu dalszych działań.
-            </p>
+            <p>{{ content.services.intro }}</p>
           </div>
 
           <div class="services-grid">
-            <article class="service-card service-card--featured">
-              <span class="service-card__number">01</span>
-              <h3>Karta pobytu</h3>
-              <p>Wsparcie przy przygotowaniu dokumentów i przejściu przez kolejne etapy postępowania.</p>
-              <a href="#consultation">Zapytaj o usługę <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="service-card">
-              <span class="service-card__number">02</span>
-              <h3>PESEL</h3>
-              <p>Pomoc w przygotowaniu danych i dokumentów potrzebnych do złożenia wniosku.</p>
-              <a href="#consultation">Zapytaj o usługę <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="service-card">
-              <span class="service-card__number">03</span>
-              <h3>Niebieska Karta UE</h3>
-              <p>Uporządkowanie dokumentacji i wsparcie informacyjne dla wykwalifikowanych pracowników.</p>
-              <a href="#consultation">Zapytaj o usługę <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="service-card">
-              <span class="service-card__number">04</span>
-              <h3>Obywatelstwo</h3>
-              <p>Wstępna analiza sytuacji oraz pomoc w skompletowaniu wymaganej dokumentacji.</p>
-              <a href="#consultation">Zapytaj o usługę <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="service-card">
-              <span class="service-card__number">05</span>
-              <h3>Tłumaczenie prawa jazdy</h3>
-              <p>Wsparcie w organizacji tłumaczenia oraz przygotowaniu dokumentów do dalszych formalności.</p>
-              <a href="#consultation">Zapytaj o usługę <span aria-hidden="true">→</span></a>
-            </article>
+            {% for service in content.services['items'] %}
+              <article class="service-card{% if loop.first %} service-card--featured{% endif %}">
+                <span class="service-card__number">{{ "%02d" | format(loop.index) }}</span>
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.description }}</p>
+                <a href="#consultation">
+                  {{ content.services.cta }} <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            {% endfor %}
           </div>
         </div>
       </section>
@@ -209,33 +195,29 @@
             <div class="about__image-frame">
               <img
                 src="{{ url_for('static', path='/images/warsaw-skyline.jpg') }}"
-                alt="Panorama centrum Warszawy"
+                alt="{{ content.about.image_alt }}"
                 width="1800"
                 height="1200"
                 loading="lazy"
               >
             </div>
             <figcaption>
-              Zdjęcie:
-              <a href="https://unsplash.com/photos/KWcQ6_dk_OM" rel="noopener noreferrer">Iwona Castiello d'Antonio / Unsplash</a>
+              {{ content.about.photo }}:
+              <a href="https://unsplash.com/photos/KWcQ6_dk_OM" rel="noopener noreferrer">
+                Iwona Castiello d'Antonio / Unsplash
+              </a>
             </figcaption>
           </figure>
 
           <div class="about__content">
-            <p class="section-kicker">O nas</p>
-            <h2 id="about-title">Formalności bez niepotrzebnego chaosu</h2>
-            <p class="about__lead">
-              Non-stop Documents wspiera cudzoziemców w sprawach związanych z pobytem
-              i dokumentami w Polsce.
-            </p>
-            <p>
-              Zamiast uniwersalnych obietnic oferujemy uporządkowany proces: poznajemy
-              sytuację, wyjaśniamy kolejne kroki i pomagamy przygotować potrzebne dokumenty.
-            </p>
+            <p class="section-kicker">{{ content.about.kicker }}</p>
+            <h2 id="about-title">{{ content.about.title }}</h2>
+            <p class="about__lead">{{ content.about.lead }}</p>
+            <p>{{ content.about.body }}</p>
             <div class="about__values">
-              <div><strong>Przejrzystość</strong><span>Wiesz, jaki jest następny krok.</span></div>
-              <div><strong>Uważność</strong><span>Każda sytuacja wymaga osobnej analizy.</span></div>
-              <div><strong>Kontakt</strong><span>Pozostajemy w kontakcie podczas współpracy.</span></div>
+              {% for value in content.about['values'] %}
+                <div><strong>{{ value.title }}</strong><span>{{ value.text }}</span></div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -244,16 +226,19 @@
       <section class="section process" id="process" aria-labelledby="process-title">
         <div class="container">
           <div class="section-heading section-heading--center">
-            <p class="section-kicker">Jak działamy</p>
-            <h2 id="process-title">Cztery przejrzyste kroki</h2>
-            <p>Od pierwszego kontaktu do uporządkowanego planu dalszego działania.</p>
+            <p class="section-kicker">{{ content.process.kicker }}</p>
+            <h2 id="process-title">{{ content.process.title }}</h2>
+            <p>{{ content.process.intro }}</p>
           </div>
 
           <ol class="process-list">
-            <li><span>01</span><h3>Zostaw zapytanie</h3><p>Podaj podstawowe dane i krótko opisz swoją sprawę.</p></li>
-            <li><span>02</span><h3>Konsultacja</h3><p>Poznajemy sytuację i odpowiadamy na najważniejsze pytania.</p></li>
-            <li><span>03</span><h3>Przygotowanie</h3><p>Ustalamy listę dokumentów oraz kolejne działania.</p></li>
-            <li><span>04</span><h3>Wsparcie</h3><p>Pomagamy przejść przez uzgodniony zakres formalności.</p></li>
+            {% for step in content.process['items'] %}
+              <li>
+                <span>{{ "%02d" | format(loop.index) }}</span>
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.text }}</p>
+              </li>
+            {% endfor %}
           </ol>
         </div>
       </section>
@@ -261,15 +246,12 @@
       <section class="section reviews" id="reviews" aria-labelledby="reviews-title">
         <div class="container reviews__card">
           <div>
-            <p class="section-kicker">Opinie klientów</p>
-            <h2 id="reviews-title">Zaufanie budujemy na realnych doświadczeniach</h2>
+            <p class="section-kicker">{{ content.reviews.kicker }}</p>
+            <h2 id="reviews-title">{{ content.reviews.title }}</h2>
           </div>
           <div class="reviews__placeholder">
             <span aria-hidden="true">“</span>
-            <p>
-              W tym miejscu opublikujemy wyłącznie zweryfikowane opinie klientów.
-              Nie tworzymy fikcyjnych rekomendacji.
-            </p>
+            <p>{{ content.reviews.placeholder }}</p>
           </div>
         </div>
       </section>
@@ -277,29 +259,21 @@
       <section class="section faq" id="faq" aria-labelledby="faq-title">
         <div class="container faq__grid">
           <div class="faq__intro">
-            <p class="section-kicker">FAQ</p>
-            <h2 id="faq-title">Najczęściej zadawane pytania</h2>
-            <p>Nie widzisz odpowiedzi? Zostaw zapytanie, a wrócimy do Ciebie.</p>
-            <a class="text-link" href="#consultation">Przejdź do formularza <span aria-hidden="true">→</span></a>
+            <p class="section-kicker">{{ content.faq.kicker }}</p>
+            <h2 id="faq-title">{{ content.faq.title }}</h2>
+            <p>{{ content.faq.intro }}</p>
+            <a class="text-link" href="#consultation">
+              {{ content.faq.cta }} <span aria-hidden="true">→</span>
+            </a>
           </div>
 
           <div class="faq-list">
-            <details open>
-              <summary>Jakie dokumenty będą potrzebne?</summary>
-              <p>Lista zależy od rodzaju sprawy i Twojej sytuacji. Po pierwszym kontakcie przygotujemy indywidualną listę dokumentów.</p>
-            </details>
-            <details>
-              <summary>Czy konsultacja może odbyć się online?</summary>
-              <p>Tak. Zakres i dogodną formę konsultacji ustalamy podczas pierwszego kontaktu.</p>
-            </details>
-            <details>
-              <summary>Ile trwa załatwienie sprawy?</summary>
-              <p>Czas zależy od rodzaju postępowania, kompletności dokumentów oraz pracy właściwego urzędu. Nie obiecujemy nierealnych terminów.</p>
-            </details>
-            <details>
-              <summary>W jakich językach będzie dostępna obsługa?</summary>
-              <p>Strona jest obecnie przygotowana po polsku. Wersje ukraińska, rosyjska i angielska zostaną dodane po weryfikacji tłumaczeń.</p>
-            </details>
+            {% for item in content.faq['items'] %}
+              <details{% if loop.first %} open{% endif %}>
+                <summary>{{ item.question }}</summary>
+                <p>{{ item.answer }}</p>
+              </details>
+            {% endfor %}
           </div>
         </div>
       </section>
@@ -307,10 +281,12 @@
       <section class="final-cta" aria-labelledby="final-cta-title">
         <div class="container final-cta__inner">
           <div>
-            <p class="section-kicker">Zacznijmy od rozmowy</p>
-            <h2 id="final-cta-title">Opowiedz nam o swojej sprawie</h2>
+            <p class="section-kicker">{{ content.final_cta.kicker }}</p>
+            <h2 id="final-cta-title">{{ content.final_cta.title }}</h2>
           </div>
-          <a class="button button--light" href="#consultation">Zostaw zapytanie <span aria-hidden="true">→</span></a>
+          <a class="button button--light" href="#consultation">
+            {{ content.final_cta.button }} <span aria-hidden="true">→</span>
+          </a>
         </div>
       </section>
     </main>
@@ -318,27 +294,27 @@
     <footer class="site-footer">
       <div class="container site-footer__grid">
         <div>
-          <a class="brand brand--footer" href="#top">
+          <a class="brand brand--footer" href="#top" aria-label="{{ content.home_label }}">
             <span class="brand__mark" aria-hidden="true">ND</span>
             <span class="brand__name">Non-stop<br>Documents</span>
           </a>
-          <p>Wsparcie w legalizacji pobytu i dokumentach w Polsce.</p>
+          <p>{{ content.footer.description }}</p>
         </div>
         <div>
-          <p class="footer-heading">Nawigacja</p>
-          <a href="#services">Usługi</a>
-          <a href="#about">O nas</a>
-          <a href="#process">Jak działamy</a>
-          <a href="#faq">FAQ</a>
+          <p class="footer-heading">{{ content.footer.navigation }}</p>
+          <a href="#services">{{ content.nav.services }}</a>
+          <a href="#about">{{ content.nav.about }}</a>
+          <a href="#process">{{ content.nav.process }}</a>
+          <a href="#faq">{{ content.nav.faq }}</a>
         </div>
         <div>
-          <p class="footer-heading">Kontakt</p>
-          <p>Dane kontaktowe i link do Telegramu zostaną uzupełnione przed publikacją.</p>
+          <p class="footer-heading">{{ content.footer.contact }}</p>
+          <p>{{ content.footer.contact_placeholder }}</p>
         </div>
       </div>
       <div class="container site-footer__bottom">
         <span>© 2026 Non-stop Documents</span>
-        <span>Polityka prywatności — w przygotowaniu</span>
+        <span>{{ content.footer.privacy }}</span>
       </div>
     </footer>
   </body>

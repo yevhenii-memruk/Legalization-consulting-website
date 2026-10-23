@@ -101,8 +101,7 @@ summary {
   background: rgb(255 255 255 / 7%);
 }
 
-.language-switcher span,
-.language-switcher button {
+.language-switcher a {
   display: grid;
   min-width: 2.15rem;
   height: 2rem;
@@ -114,6 +113,7 @@ summary {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.05em;
+  text-decoration: none;
 }
 
 .language-switcher__active {
@@ -420,8 +420,7 @@ h1 {
     display: none;
   }
 
-  .language-switcher span,
-  .language-switcher button {
+  .language-switcher a {
     min-width: 1.9rem;
   }
 

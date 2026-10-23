@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 
 
@@ -14,6 +15,36 @@ def test_home_page(client: TestClient) -> None:
     assert 'action="/api/leads"' in response.text
     assert 'method="post"' in response.text
     assert 'type="submit" data-lead-submit' in response.text
+
+
+@pytest.mark.parametrize(
+    ("language", "expected_text"),
+    [
+        ("pl", "Twoje dokumenty."),
+        ("uk", "Ваші документи."),
+        ("ru", "Ваши документы."),
+        ("en", "Your documents."),
+    ],
+)
+def test_home_page_language(
+    client: TestClient,
+    language: str,
+    expected_text: str,
+) -> None:
+    response = client.get("/", params={"lang": language})
+
+    assert response.status_code == 200
+    assert f'<html lang="{language}">' in response.text
+    assert expected_text in response.text
+    assert response.text.count('aria-current="page"') == 1
+
+
+def test_unknown_language_falls_back_to_polish(client: TestClient) -> None:
+    response = client.get("/", params={"lang": "de"})
+
+    assert response.status_code == 200
+    assert '<html lang="pl">' in response.text
+    assert "Twoje dokumenty." in response.text
 
 
 def test_security_headers(client: TestClient) -> None:

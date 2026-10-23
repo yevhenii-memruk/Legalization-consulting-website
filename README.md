@@ -5,7 +5,7 @@ company in Poland.
 
 ## Current features
 
-- Responsive Polish landing page
+- Responsive landing page in Polish, Ukrainian, Russian, and English
 - Accessible navigation and mobile menu
 - Consultation form with server-side validation and an optional comment field
 - Services, company information, process, reviews placeholder, and FAQ sections
@@ -37,6 +37,9 @@ uv run uvicorn legalization_consulting.main:app --reload
 
 Then open <http://127.0.0.1:8000>. The health endpoint is available at
 <http://127.0.0.1:8000/health>.
+
+Polish is the default language. Other versions are available with the `lang` query
+parameter, for example <http://127.0.0.1:8000/?lang=uk>.
 
 ## Quality checks
 

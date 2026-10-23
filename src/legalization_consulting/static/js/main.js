@@ -9,7 +9,7 @@ function closeNavigation() {
   if (!navToggle || !navigation || !header) return;
 
   navToggle.setAttribute("aria-expanded", "false");
-  navToggle.setAttribute("aria-label", "Otwórz menu");
+  navToggle.setAttribute("aria-label", navToggle.dataset.labelOpen || "Open menu");
   navigation.classList.remove("is-open");
   header.classList.remove("is-menu-open");
 }
@@ -19,7 +19,10 @@ navToggle?.addEventListener("click", () => {
 
   const isOpen = navToggle.getAttribute("aria-expanded") === "true";
   navToggle.setAttribute("aria-expanded", String(!isOpen));
-  navToggle.setAttribute("aria-label", isOpen ? "Otwórz menu" : "Zamknij menu");
+  navToggle.setAttribute(
+    "aria-label",
+    isOpen ? navToggle.dataset.labelOpen : navToggle.dataset.labelClose,
+  );
   navigation.classList.toggle("is-open", !isOpen);
   header.classList.toggle("is-menu-open", !isOpen);
 });
@@ -58,7 +61,7 @@ leadForm?.addEventListener("submit", async (event) => {
 
   leadSubmit.disabled = true;
   leadSubmit.setAttribute("aria-busy", "true");
-  setFormStatus("Wysyłanie zapytania…", "pending");
+  setFormStatus(leadForm.dataset.statusPending, "pending");
 
   try {
     const response = await fetch(leadForm.action, {
@@ -73,26 +76,23 @@ leadForm?.addEventListener("submit", async (event) => {
     if (response.ok) {
       leadForm.reset();
       leadForm.querySelector("details")?.removeAttribute("open");
-      setFormStatus(
-        "Dziękujemy. Twoje zapytanie zostało zapisane — skontaktujemy się z Tobą.",
-        "success",
-      );
+      setFormStatus(leadForm.dataset.statusSuccess, "success");
       return;
     }
 
     if (response.status === 429) {
-      setFormStatus("Zbyt wiele prób. Spróbuj ponownie za kilka minut.", "error");
+      setFormStatus(leadForm.dataset.statusRateLimit, "error");
       return;
     }
 
     if (response.status === 422) {
-      setFormStatus("Sprawdź poprawność imienia i numeru telefonu.", "error");
+      setFormStatus(leadForm.dataset.statusValidation, "error");
       return;
     }
 
-    setFormStatus("Formularz jest chwilowo niedostępny. Spróbuj ponownie później.", "error");
+    setFormStatus(leadForm.dataset.statusUnavailable, "error");
   } catch {
-    setFormStatus("Nie udało się połączyć z serwerem. Sprawdź połączenie i spróbuj ponownie.", "error");
+    setFormStatus(leadForm.dataset.statusConnection, "error");
   } finally {
     leadSubmit.disabled = false;
     leadSubmit.removeAttribute("aria-busy");
