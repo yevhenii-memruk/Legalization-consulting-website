@@ -1,95 +1,196 @@
 # Non-Stop Documents
 
-FastAPI website for **Non-Stop Documents**, a legalization and document consulting
-company in Poland.
+FastAPI-based multilingual website for Non-Stop Documents, a Polish legalization and document consulting company.
 
-## Current features
+This project provides a modern, accessible landing page with localized content, a consultation form, SEO optimization, and a safe lead-capture flow designed for production and preview environments.
+
+## Overview
+
+Non-Stop Documents helps clients with legalization and document-related consulting services in Poland. The website is built to be:
+
+- multilingual and customer-friendly
+- responsive on mobile and desktop
+- optimized for search engines and social sharing
+- secure by default in pre-production and staging
+- easy to deploy with Docker
+- testable and ready for CI quality checks
+
+## Features
 
 - Responsive landing page in Polish, Ukrainian, Russian, and English
-- Accessible navigation and mobile menu
-- Consultation form with server-side validation and an optional comment field
-- Localized privacy policy and public contact details
-- Canonical, multilingual, and social-sharing metadata after a public URL is configured
-- Dynamic `robots.txt` and XML sitemap with safe pre-production defaults
-- Services, company information, process, reviews placeholder, and FAQ sections
-- FastAPI health endpoint, automated tests, and GitHub Actions quality checks
+- Multilingual content switching via language query parameter
+- Accessible navigation with a mobile-friendly menu
+- Consultation form with server-side validation
+- Optional comment field for client inquiries
+- Privacy policy and contact details localized by language
+- SEO metadata support for canonical URLs, social cards, and localization
+- Dynamic robots.txt and sitemap generation
+- Safe pre-production defaults with noindex/nofollow when public base URL is not configured
+- Services, company info, process, reviews, and FAQ sections
+- FastAPI health check endpoint
+- Automated tests for pages, localization, SEO, and lead processing
+- Dockerized production setup
+- Optional Google Sheets integration for lead collection (disabled by default)
 
-Lead collection is disabled by default. When enabled, validated consultation requests
-are appended to a private Google Sheet through Application Default Credentials.
-While it is disabled, the public endpoint returns a controlled `503` response and does
-not retain submitted personal data.
+## Tech Stack
+
+- Python 3.14
+- FastAPI
+- Jinja2 templates
+- Pydantic settings
+- phonenumberslite
+- Google API client
+- pytest + ruff
+- Docker
+
+## Project Structure
+
+```text
+src/legalization_consulting/
+├── main.py                 # FastAPI app factory and entry point
+├── core/                  # Settings, path handling, and Jinja setup
+├── integrations/          # Third-party integrations
+├── routers/               # Page and API route handlers
+├── schemas/               # Request/response schemas
+├── services/              # Business logic
+├── static/                # CSS, JS, images, and static assets
+├── templates/             # HTML templates
+└── __init__.py
+
+tests/
+├── conftest.py
+├── test_api.py
+├── test_i18n.py
+├── test_leads.py
+├── test_pages.py
+└── test_seo.py
+```
 
 ## Requirements
 
 - Python 3.14
 - [uv](https://docs.astral.sh/uv/)
 
-## Local development
+## Local Development
 
-Install the locked dependencies:
+1. Install dependencies:
 
-```powershell
+```bash
 uv sync
 ```
 
-Start the development server:
+2. Start the development server:
 
-```powershell
+```bash
 uv run uvicorn legalization_consulting.main:app --reload
 ```
 
-Then open <http://127.0.0.1:8000>. The health endpoint is available at
-<http://127.0.0.1:8000/health>.
-
-Polish is the default language. Other versions are available with the `lang` query
-parameter, for example <http://127.0.0.1:8000/?lang=uk>.
-
-## Quality checks
-
-```powershell
-uv run pytest
-uv run ruff check .
-```
-
-## Project structure
+3. Open the app in your browser:
 
 ```text
-src/legalization_consulting/
-├── main.py          # Application entry point & factory
-├── core/            # Settings, paths, and Jinja2 setup
-├── routers/         # HTML page and API routes
-├── static/          # Static assets (CSS, JS, images)
-└── templates/       # Jinja2 HTML templates
-tests/               # Automated test suites
+http://127.0.0.1:8000
 ```
 
-Copy `.env.example` to `.env` when local settings need to override the defaults.
+The health endpoint is available at:
 
-## Production configuration
+```text
+http://127.0.0.1:8000/health
+```
 
-Set `APP_PUBLIC_BASE_URL` to the final HTTPS origin, without a path, after choosing a
-domain. Until it is set, pages use `noindex,nofollow`, `robots.txt` disallows crawling,
-and `/sitemap.xml` is unavailable. This prevents preview environments from being
-indexed accidentally.
+Polish is the default language. You can switch language using the `lang` query parameter, for example:
 
-The application includes a production container that runs as a non-root user:
+```text
+http://127.0.0.1:8000/?lang=uk
+```
 
-```powershell
+## Environment Configuration
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Key configuration values include:
+
+- `APP_NAME`
+- `APP_DESCRIPTION`
+- `APP_CONTACT_EMAIL`
+- `APP_PUBLIC_BASE_URL`
+- `APP_LEADS_ENABLED`
+- `APP_GOOGLE_SHEETS_SPREADSHEET_ID`
+
+Important:
+
+- Lead collection is disabled by default.
+- Public SEO settings are only enabled once a production URL is configured.
+- Until `APP_PUBLIC_BASE_URL` is set, pages use `noindex, nofollow` and sitemap/robots behavior stays restricted.
+
+## Production Deployment
+
+The project includes a Docker setup for production deployment.
+
+Build the image:
+
+```bash
 docker build -t non-stop-documents .
+```
+
+Run the container:
+
+```bash
 docker run --rm -p 8080:8080 --env-file .env non-stop-documents
 ```
 
-Open <http://127.0.0.1:8080/health> to verify the container. Never bake `.env` or Google
-credentials into the image; inject them through the hosting platform's secret settings.
+Then verify:
 
-## Lead collection
+```text
+http://127.0.0.1:8080/health
+```
 
-Create a Google Sheet with these columns in the `Leads` tab:
+## Lead Collection
+
+Lead collection is supported through Google Sheets, but remains disabled by default until the service is properly configured.
+
+Required spreadsheet columns:
 
 ```text
 Lead ID | Created at Europe/Warsaw | Full name | Phone | Comment | Language | Source
 ```
 
-Copy `.env.example` to `.env`, set the spreadsheet ID, configure Google Application
-Default Credentials, and enable lead collection only after publishing the required
-privacy information. Credential files and private keys must never be committed.
+To enable it:
+
+1. Create a Google Sheet with the required columns
+2. Set `APP_GOOGLE_SHEETS_SPREADSHEET_ID`
+3. Configure Google Application Default Credentials
+4. Enable `APP_LEADS_ENABLED` only after privacy requirements are in place
+
+Important: credentials and private keys must never be committed to the repository.
+
+## Quality Checks
+
+Run tests:
+
+```bash
+uv run pytest
+```
+
+Run lint checks:
+
+```bash
+uv run ruff check .
+```
+
+## License
+
+This project is intended for the Non-Stop Documents business website and is configured for project-specific deployment. If you plan to publish it publicly, add the appropriate license file and legal notice.
+
+## Notes
+
+This project is designed to be safe for preview environments and to avoid leaking or indexing unfinished production content. It is especially suitable for a consulting business that needs:
+
+- multilingual communication
+- a lead form without unnecessary default exposure
+- fast deployment
+- SEO control
+- privacy-conscious data handling
