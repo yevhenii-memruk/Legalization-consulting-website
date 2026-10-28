@@ -85,17 +85,8 @@ uv sync
 uv run uvicorn legalization_consulting.main:app --reload
 ```
 
-3. Open the app in your browser:
-
-```text
-http://127.0.0.1:8000
-```
-
-The health endpoint is available at:
-
-```text
-http://127.0.0.1:8000/health
-```
+3. Open the app in your browser: <http://127.0.0.1:8000>
+The health endpoint is available at: <http://127.0.0.1:8000/health>
 
 Polish is the default language. You can switch language using the `lang` query parameter, for example:
 
@@ -152,12 +143,6 @@ http://127.0.0.1:8080/health
 
 Lead collection is supported through Google Sheets, but remains disabled by default until the service is properly configured.
 
-Required spreadsheet columns:
-
-```text
-Lead ID | Created at Europe/Warsaw | Full name | Phone | Comment | Language | Source
-```
-
 To enable it:
 
 1. Create a Google Sheet with the required columns
@@ -184,13 +169,3 @@ uv run ruff check .
 ## License
 
 This project is intended for the Non-Stop Documents business website and is configured for project-specific deployment. If you plan to publish it publicly, add the appropriate license file and legal notice.
-
-## Notes
-
-This project is designed to be safe for preview environments and to avoid leaking or indexing unfinished production content. It is especially suitable for a consulting business that needs:
-
-- multilingual communication
-- a lead form without unnecessary default exposure
-- fast deployment
-- SEO control
-- privacy-conscious data handling
